@@ -1,0 +1,46 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+
+}
+
+header {
+    margin-bottom: 2rem;
+}
+
+#videoPlayer {
+    width: 100%;
+    max-width: 100%;
+}
+
+@media (max-width: 576px) {
+    #videoPlayer {
+        height: auto;
+    }
+}
+
+@media (min-width: 577px) and (max-width: 1400px) {
+    #videoPlayer {
+        height: 315px;
+    }
+}
+
+@media (min-width: 1401px) {
+    #videoPlayer {
+        height: 420px;
+    }
+}

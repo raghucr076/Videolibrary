@@ -1,0 +1,70 @@
+﻿@model IEnumerable<System.IO.FileInfo>
+@{
+    ViewData["Title"] = "Catalogue";
+}
+
+@if (Model != null && Model.Count<FileInfo>() > 0)
+{
+   
+    <div class="container-fluid">
+        <div class="alert alert-primary">
+            Select a video file from the table to start playback
+        </div>
+        <div id="videoPlayer" class="border p-2" style="background-color: black;">
+            <video id="videoElement" width="100%" height="100%" controls>
+                <source id="videoSource" src="" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="">
+
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Filename</th>
+                            <th>File Size (in MB)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var file in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <a href="javascript:void(0);" onclick="playVideo('@Url.Content("~/media/" + file.Name)')">
+                                        @file.Name
+                                    </a>
+                                </td>
+                                <td>@(
+                                    file.Length / 1024 / 1024
+                                    ) MB</td>
+                            </tr>
+                        }
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="container-fluid alert alert-primary">
+            The catalogue is empty. Use the upload form to add videos.
+   
+ </div>   
+}
+@section Scripts {
+    <script>
+        function playVideo(url) {
+            var videoSource = document.getElementById('videoSource');
+            var videoElement = document.getElementById('videoElement');
+            videoSource.src = url;
+            videoElement.load();
+            videoElement.play();
+        }
+    </script>
+}
