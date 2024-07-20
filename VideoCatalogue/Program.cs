@@ -1,17 +1,18 @@
 using Microsoft.Extensions.FileProviders;
+using Serilog;
+using VideoCatalogue.CustomMiddleware;
 
 var builder = WebApplication.CreateBuilder(args);
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// Configure Kestrel server options
-builder.WebHost.ConfigureKestrel(options =>
+builder.Services.Configure<RequestSizeLimitOptions>(options =>
 {
-    options.Limits.MaxRequestBodySize = 30 * 1024 * 1024;   // No global limit, handled by FormOptions
-   
+    options.MaxRequestBodySize = 209715200; // 200 MB
+    options.PathToLimit = "/api/Fileupload";
 });
-
 
 var app = builder.Build();
 
@@ -31,6 +32,8 @@ app.UseStaticFiles(new StaticFileOptions
     FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "MediaFiles")),
     RequestPath = "/media"
 });
+
+app.UseMiddleware<RequestSizeLimitMiddleware>(); // 200 MB
 app.UseRouting();
 app.MapControllerRoute(
     name: "default",
